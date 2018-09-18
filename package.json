@@ -1,0 +1,16 @@
+{
+    "name": "logger",
+    "version": "0.1.0",
+    "description": "Simple logging utility I will use for multiple projects",
+    "main": "logger.js",
+    "scripts": {
+        "test": "printf \"\\033c\" && mocha test/test.js"
+    },
+    "author": "Martin Vaaden <mavaaden@gmail.com> (http://www.abstactionsofreality.net)",
+    "license": "MIT",
+    "private": true,
+    "devDependencies": {
+        "chai": "^4.1.2",
+        "sinon": "^4.2.2"
+    }
+}
