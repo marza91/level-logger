@@ -1,6 +1,6 @@
 {
     "name": "logger",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Simple logging utility I will use for multiple projects",
     "main": "logger.js",
     "scripts": {

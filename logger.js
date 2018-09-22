@@ -5,27 +5,50 @@
 const LOGLEVELS = {
     None : 0,
     Error : 1,
-    Info : 2,
+    Warning : 2,
     Debug : 3
 };
 
 class Logger {
-    constructor(writer, format, logLevel) {
+    constructor(options) {
         // Private
-        var log = (...args) => {
-            writer.write(format.apply(null, args));
-            writer.write("\n");
+        var log;
+        var logSingle = (w, f, ...args) => {
+            w.write(f.apply(null, args));
+            w.write("\n");
         };
+
+        if(!options) {
+            throw new ReferenceError("No options supplied");
+        }
+        else if(options.writer && options.format) {
+            log = (level, ...args) =>
+            {
+                if(options.logLevel >= level)
+                    logSingle(options.writer, options.format, ...args);
+            };
+        }
+        else if(options.constructor == Array) {
+            log = (level, ...args) => {
+                options.forEach((o) => {
+                    if(o.logLevel >= level)
+                        logSingle(o.writer, o.format, ...args);
+                });
+            };
+        }
+        else {
+            throw new TypeError("Invalid writer object supplied");
+        }
 
         // Public
         this.error = (...args) => {
-            if(logLevel >= LOGLEVELS.Error) log(...args);
+            log(LOGLEVELS.Error, ...args);
         };
-        this.info = (...args) => {
-            if(logLevel >= LOGLEVELS.Info) log(...args);
+        this.warning = (...args) => {
+            log(LOGLEVELS.Warning, ...args);
         };
         this.debug = (...args) => {
-            if(logLevel >= LOGLEVELS.Debug) log(...args);
+            log(LOGLEVELS.Debug, ...args);
         };
     }
 }
